@@ -1,3 +1,9 @@
+var clusterfck = (function() {
+    var module = { exports: {}};
+    var exports = module.exports;
+module.exports = (function() {
+    var module = { exports: {}};
+    var exports = module.exports;
 
 var HierarchicalClustering = function(distance, merge, threshold) {
   this.distance = distance || clusterfck.EUCLIDEAN_DISTANCE;
@@ -162,3 +168,5 @@ clusterfck = {
 };
 
 module.exports = clusterfck;
+return module.exports;   })();
+return module.exports;   })()

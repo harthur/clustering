@@ -1,4 +1,4 @@
-importScripts('rgb.js', 'clusterfck.js');
+importScripts('rgb.js', '../clusterfck.js');
 
 onmessage = function(event) {
   var data = event.data;
