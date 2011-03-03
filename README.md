@@ -1,10 +1,10 @@
 #clusterfck
-A js [hierarchical clustering](http://en.wikipedia.org/wiki/Hierarchical_clustering) lib.
+A js [hierarchical clustering](http://en.wikipedia.org/wiki/Hierarchical_clustering) lib. [Demo here](http://harthur.github.com/clusterfck/demos/colors/).
 
 # install
-git clone http://github.com/harthur/clusterfck.git
-cd clusterfck
-npm install .
+	git clone http://github.com/harthur/clusterfck.git
+	cd clusterfck
+	npm install .
 
 # usage
 	var clusterfck = require("clusterfck");
