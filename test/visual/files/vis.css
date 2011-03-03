@@ -1,0 +1,64 @@
+body {
+  font-family: Lucida Grande, sans-serif;  
+}
+
+.button {
+  padding: 0.4em 0.7em;
+  margin: 0.3em;
+  display: inline-block;
+  cursor: pointer;
+  -moz-border-radius: 8px;
+  -webkit-border-radius: 8px;
+  border-radius: 8px;
+  -moz-box-shadow: 0 1px 3px #999999;
+  -webkit-box-shadow: 0 1px 3px #999999;
+  color: #222222;
+  background-color: #f7f7f7;
+}
+
+#container {
+  margin: 40px;
+}
+
+#header {
+  font-size: 1.2em;
+  text-align: center;
+  margin: 20px;
+}
+
+#sample {
+  text-align: center;
+}
+
+#cluster-buttons {
+  margin: 10px 0 0 14px;
+}
+
+#clusters {
+  margin: 40px auto;
+  text-align: center;
+}
+
+#paste-box {
+  margin: 20px;
+}
+
+#colors {
+  width: 400px;
+  height: 200px;
+}
+
+.group {
+  padding: 2px 3px;
+  float: left;
+}
+
+.row {
+  clear: both;
+}
+
+.swatch {
+  width: 2px;
+  height: 2px;
+  float: left;
+}

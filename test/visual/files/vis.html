@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="vis.css"/>
+
+  <script src="jquery-1.4.2.min.js"></script>	
+	<script src="vis.js"></script>
+	<script src="rgb.js"></script>
+	<script src="clusterfck.js"></script>
+</head>
+<body>
+  <div id="container">
+	  <div id="header">hierarchical clustering</div>
+	  <div id="sample">
+		  <img id="test-image" src="chopsuey.jpg"/>
+		  <div id="cluster-buttons">
+			  cluster colors from ^ with linkage: 
+		    <span id="single-button" class="button" data-linkage="single">single</span>
+		    <span id="complete-button" class="button" data-linkage="complete">complete</span>
+		    <span id="average-button" class="button" data-linkage="average">average</span>
+	    </div>
+		</div>
+	  <div id="clusters">
+	  </div>
+	</div>
+
+</body>
+</html>
