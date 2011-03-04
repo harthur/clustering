@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>clusterfck - JavaScript hierarchical clustering</title>
+<link rel="stylesheet/less" href="index.less" type="text/css">
+<script src="less-1.0.34.min.js" type="text/javascript"></script>
+
+</head>
+<body>
+  <a href="http://github.com/harthur/clusterfck"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub" /></a>
+  <div id="container">
+    <div id="header">
+      <div id="title">clusterfck</div>
+      <div id="subtitle">JavaScript agglomerative hierarchical clustering</div>
+    </div>
+    
+    <div id="side-nav">
+      <ul id="nav-list">
+        <li class="nav-list-header">Docs</li>
+        <li><a href="#neural-network">hcluster()</a></li>
+      </ul>
+    </div>
+    
+    <div id="content">
+      <div class="section">
+        <p>clusterfck is a JavaScript library for 
+        <a href="http://en.wikipedia.org/wiki/Hierarchical_clustering">
+          hierarchical clustering</a>.
+        An example use, clustering similar colors based on their rgb values:
+        <pre class="code-example">
+var clusterfck = require("clusterfck");
+
+var colors = [[255, 255, 240],
+              [20, 120, 102],
+              [250, 255, 253],
+              [100, 54, 300]];
+
+var threshold = 14; // only combine two clusters with distance less than 14
+
+var clusters = clusterfck.hcluster(colors, clusterfck.EUCLIDEAN_DISTANCE,
+	clusterfck.AVERAGE_LINKAGE, threshold);</pre>
+          <code>clusters</code> will be an array of clusters. Each cluster is a hierarchy with <code>left</code>
+          and <code>right</code> clusters. The leaf clusters will have a <code>canonical</code> property for the original item,
+          in this case the vector of rgb values that represents the color.
+        </p>
+      </div>
+      <div class="main-section">
+        <div class="section-header">
+          Download
+        </div>
+        <div class="section-content">
+          <p>To use this in the browser, download the latest <a href="http://github.com/harthur/clusterfck/downloads">clusterfck.js</a>. Performing the clustering on a Worker thread is recommended, as it can be an expensive operation.</p>
+          
+          <p>To use this as a commonJS package or server-side, checkout or download
+          <a href="http://github.com/harthur/clusterfck">the code</a> from GitHub and
+          install on <a href="http://nodejs.org/">node</a> with
+          <a href="http://github.com/isaacs/npm">npm</a>:
+          <pre>cd clusterfck
+npm install .</pre></p>
+        </div>
+      </div>
+      <div class="main-section" id="neural-network">
+        <div class="section-header">
+          Hierarchical Clustering
+        </div>
+        <div class="section-content">
+          The hierarchical clustering method performs a standard bottom-up agglomerative hierarchical clustering of objects. You can either build up a hierarchy of all the items with one root node, or given a threshold parameter cluster until there are no more clusters under a certain distance apart, getting an array of hierarchies.
+          <div class="section-header sub-section-header">
+            API
+          </div>
+          <div class="section">
+            <div class="api-section-header">
+              <code class="section-code">var clusters = clusterfck.<span class="api-spec">hcluster</span>(items, metric, linkage, <span class="optional">threshold</span>)</code>
+            </div>
+            <code>hcluster</code> takes these arguments: 
+            <ul class="arguments">
+                <li class="argument">
+                  <code>items</code> - The items to be clustered. The items can be anything, but should be arrays (vectors) if
+                  any of the predefined distance metrics are used.
+                </li>
+                <li class="argument">
+                  <code>metric</code> - The distance metric for measuring the distance between two items. Can either be a function that takes two items and returns a float representing the distance, or it can be one of the pre-defined functions:
+                  <ul class="arguments">
+                    <li class="argument">
+                      <code>clusterfck.EUCLIDEAN_DISTANCE</code>
+                    </li>
+                    <li class="argument">
+                      <code>clusterfck.MANHATTAN_DISTANCE</code>
+                    </li>
+                    <li class="argument">
+                      <code>clusterfck.MAX_DISTANCE</code>
+                    </li>
+                </ul>
+                </li> 
+                <li class="argument">
+                  <code>linkage</code> - The linkage criteria for determining the distance between two clusters. Can either be a function that takes two items and returns an item that represents a merge, or one of the predefined linkage criteria:
+                  <ul class="arguments">
+                    <li class="argument">
+                      <code>clusterfck.AVERAGE_LINKAGE</code> - the distance between two clusters is an average of the
+                        differences between the items in the clusters.
+                    </li>
+                    <li class="argument">
+                      <code>clusterfck.SINGLE_LINKAGE</code> - the distance between clusters is the smallest distance
+                        between an item from each cluster.
+                    </li>
+                    <li class="argument">
+                      <code>clusterfck.COMPLETE_LINKAGE</code> - the distance between clusters is the largest distance
+                        between two items in the clusters.
+                    </li>
+                  </ul>
+                </li>
+                <li class="argument">
+                  <code>threshold</code> - The optional stopping criterion. When every cluster is more than <code>threshold</code> distance apart, clustering is stopped and the current set of hierarchies is returned.
+                </li>
+              </ul>
+              Clustering returns an array of hierarchies of the original objects. Each hierarchy has a <code>left</code> and <code>right</code> cluster, and the leaf clusters have a <code>canonical</code> property with the original item:
+              <pre class="code-example">
+[
+  {"canonical":[20,120,102],
+   "size":1
+  },
+  {"canonical":[250,255,253],
+   "left":{
+      "canonical":[250,255,253],
+      "size":1
+    },
+   "right":{
+      "canonical":[255,255,240],
+      "size":1
+    },
+   "size":2
+  },
+  {"canonical":[100,54,300],
+   "size":1
+  }
+]</pre>
+          </div>
+          <div class="section" id="demo">
+            <div class="section-header sub-section-header">
+              Demo
+            </div>
+            <div class="section-content">
+              <a href="http://harthur.github.com/clusterfck/demos/colors">
+                  <img src="demo.png" id="demo-thumbnail">
+              </a>
+              This webpage takes the colors from an image and clusters them based on their rgb values using
+              different linkage criteria. You can see the code for this page on
+              <a href="http://github.com/harthur/clusterfck/blob/gh-pages/demos/colors">clusterfck's github</a>.
+            </div>
+          </div>
+      </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
