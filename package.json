@@ -13,7 +13,7 @@
     "dependencies" : {
     },
     "devDependencies": {
-      "uglify" : "*",
+      "uglify-js" : "*",
       "underscore": "*",
       "nomnom" : "*",
       "cradle" : "*",

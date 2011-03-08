@@ -1,7 +1,5 @@
 /*
   Turns CommonJS package into a browser file.
-  Minifying requires UglifyJS (http://github.com/mishoo/UglifyJS)
-  to be in the dir above this one.
   
   uses node-jake http://github.com/mde/node-jake
   run with 'jake [build|minify|clean]'
@@ -66,11 +64,12 @@ function getCode(file, indent) {
 }
 
 function minify(code) {
-  var jsp = require("../UglifyJS/lib/parse-js"),
-      pro = require("../UglifyJS/lib/process");
+  var uglifyjs = require("uglify-js"),
+      parser = uglifyjs.parser,
+      uglify = uglifyjs.uglify;
 
-  var ast = jsp.parse(code);
-  ast = pro.ast_mangle(ast);
-  ast = pro.ast_squeeze(ast);
-  return pro.gen_code(ast);
+  var ast = parser.parse(code);
+  ast = uglify.ast_mangle(ast);
+  ast = uglify.ast_squeeze(ast);
+  return uglify.gen_code(ast);
 }
