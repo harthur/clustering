@@ -1,5 +1,5 @@
 #clusterfck
-A js [hierarchical clustering](http://en.wikipedia.org/wiki/Hierarchical_clustering) lib. [Demo here](http://harthur.github.com/clusterfck/demos/colors/).
+A js [hierarchical clustering](http://en.wikipedia.org/wiki/Hierarchical_clustering) lib. [Demo here](http://harthur.github.com/clusterfck/demos/colors/) and [docs here](http://harthur.github.com/clusterfck/).
 
 # install
 	git clone http://github.com/harthur/clusterfck.git
