@@ -1,7 +1,7 @@
 {
     "name": "clusterfck",
     "description": "hierarchical clustering",
-    "version": "0.1",
+    "version": "0.1.0",
     "author": "Heather Arthur <fayearthur@gmail.com>",
     "repository": {
         "type": "git",
