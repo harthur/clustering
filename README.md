@@ -2,13 +2,12 @@
 A js [hierarchical clustering](http://en.wikipedia.org/wiki/Hierarchical_clustering) lib. [Demo here](http://harthur.github.com/clusterfck/demos/colors/) and [docs here](http://harthur.github.com/clusterfck/).
 
 # install
+For the browser download the latest [clusterfck.js](http://github.com/harthur/clusterfck/downloads). Install on [node](http://nodejs.org/) with [npm](http://npmjs.org/):
 	git clone http://github.com/harthur/clusterfck.git
 	cd clusterfck
 	npm install .
 
 # usage
-	var clusterfck = require("clusterfck");
-	
 	var colors = [[20, 120, 102],
 	              [0, 230, 93],
 	              [250, 255, 253],
