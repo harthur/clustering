@@ -1,23 +1,25 @@
 {
-    "name": "clusterfck",
-    "description": "hierarchical clustering",
-    "version": "0.1.0",
-    "author": "Heather Arthur <fayearthur@gmail.com>",
-    "repository": {
-        "type": "git",
-        "url": "http://github.com/harthur/clusterfck.git"
-    },
-    "directories": {
-        "lib": "./lib"
-    },
-    "dependencies" : {
-    },
-    "devDependencies": {
+   "name": "clusterfck",
+   "description": "hierarchical clustering",
+   "version": "0.1.1",
+   "author": "Heather Arthur <fayearthur@gmail.com>",
+   "repository": {
+      "type": "git",
+      "url": "http://github.com/harthur/clusterfck.git"
+   },
+   "directories": {
+      "lib": "./lib"
+   },
+   "dependencies" : {
+  
+   },
+   "devDependencies": {
       "uglify-js" : "*",
       "underscore": "*",
       "nomnom" : "*",
       "cradle" : "*",
-      "connect": "*"
-    },
-    "main": "./lib/clusterfck"
+      "connect": "*",
+      "browserify": "*"
+   },
+   "main": "./lib/clusterfck"
 }
