@@ -2,9 +2,13 @@
 A js [hierarchical clustering](http://en.wikipedia.org/wiki/Hierarchical_clustering) lib. [Demo here](http://harthur.github.com/clusterfck/demos/colors/).
 
 # Install
-	git clone http://github.com/harthur/clusterfck.git
-	cd clusterfck
-	npm install .
+
+For node.js:
+
+```bash
+npm install clusterfck
+```
+Or grab the [browser file] (http://harthur.github.com/clusterfck/demos/colors/clusterfck.js) 
 
 # Usage
 
