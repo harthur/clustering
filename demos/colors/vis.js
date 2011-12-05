@@ -44,7 +44,7 @@ function visualizeClusters(clusters) {
     for(var j = 0; j < group.length; j++) {
       if(j % width == 0)
         row = $("<div class='row'></div>").appendTo(div);
-      var color = group[j].canonical.color;
+      var color = group[j].value.color;
       color = "rgb(" + color[0] + "," + color[1] + "," + color[2] + ")";
 
       row.append("<div class='swatch' style='background-color: " +

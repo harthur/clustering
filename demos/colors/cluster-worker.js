@@ -1,4 +1,4 @@
-importScripts('rgb.js', '../clusterfck.js');
+importScripts('rgb.js', 'clusterfck.js');
 
 onmessage = function(event) {
   var data = event.data;
@@ -10,9 +10,9 @@ onmessage = function(event) {
 
 function clusterColors(colors, frameRate, linkage) {
   var linkage = {
-   "single" : {link: clusterfck.SINGLE_LINKAGE, thresh: 3},
-   "complete": {link: clusterfck.COMPLETE_LINKAGE, thresh: 50},
-   "average": {link: clusterfck.AVERAGE_LINKAGE, thresh: 24}
+   "single" : {link: 'single', thresh: 3},
+   "complete": {link: 'complete', thresh: 50},
+   "average": {link: 'average', thresh: 24}
   }[linkage];
 
   var clusters = clusterfck.hcluster(colors, sdistance, linkage.link,
