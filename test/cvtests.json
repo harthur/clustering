@@ -2,8 +2,8 @@
   "hcluster" : [
     { "db": "http://localhost:5984/colors",
       "options" : {
-        "distance": "clusterfck.EUCLIDEAN_DISTANCE",
-	      "merge" : "clusterfck.AVERAGE_LINKAGE",
+        "distance": "euclidean",
+	      "merge" : ""average"",
 				"threshold" : 7,
 				"length": 1000
 			}
@@ -11,8 +11,8 @@
 
     { "db": "http://localhost:5984/photo",
       "options" : {
-        "distance": "clusterfck.EUCLIDEAN_DISTANCE",
-	      "merge" : "clusterfck.AVERAGE_LINKAGE",
+        "distance": "euclidean",
+	      "merge" : ""average"",
 				"threshold" : 7,
 				"length" : 1000
 			}
@@ -20,8 +20,8 @@
 
     { "db": "http://localhost:5984/photo",
       "options" : {
-        "distance": "clusterfck.EUCLIDEAN_DISTANCE",
-	      "merge" : "clusterfck.AVERAGE_LINKAGE",
+        "distance": "euclidean",
+	      "merge" : ""average"",
 				"threshold" : 7,
 				"length" : 2000
 			}
