@@ -1,4 +1,4 @@
-var clusterfck = require("../../../lib/hcluster.js");
+var clusterfck = require("../../../lib/clusterfck.js");
 
 var colors = [
    [255, 255, 255],
