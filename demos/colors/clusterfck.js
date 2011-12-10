@@ -321,11 +321,15 @@ exports.extname = function(path) {
 });
 
 require.define("/clusterfck.js", function (require, module, exports, __dirname, __filename) {
-    module.exports = require("./hcluster");
+    module.exports = {
+   hcluster: require("./hcluster"),
+   kmeans: require("./kmeans")
+};
 });
 
 require.define("/hcluster.js", function (require, module, exports, __dirname, __filename) {
-    
+    var distances = require("./distance");
+
 var HierarchicalClustering = function(distance, linkage, threshold) {
    this.distance = distance;
    this.linkage = linkage;
@@ -333,11 +337,11 @@ var HierarchicalClustering = function(distance, linkage, threshold) {
 }
 
 HierarchicalClustering.prototype = {
-   cluster : function(items, snapshot, snapshotCallback) {
-      var clusters = [];
-      var dists = [];  // distances between each pair of clusters
-      var mins = []; // closest cluster for each cluster
-      var index = []; // keep a hash of all clusters by key
+   cluster : function(items, snapshotPeriod, snapshotCb) {
+      this.clusters = [];
+      this.dists = [];  // distances between each pair of clusters
+      this.mins = []; // closest cluster for each cluster
+      this.index = []; // keep a hash of all clusters by key
       
       for (var i = 0; i < items.length; i++) {
          var cluster = {
@@ -346,50 +350,49 @@ HierarchicalClustering.prototype = {
             index: i,
             size: 1
          };
-         clusters[i] = cluster;
-         index[i] = cluster;
-         dists[i] = [];
-         mins[i] = 0;
+         this.clusters[i] = cluster;
+         this.index[i] = cluster;
+         this.dists[i] = [];
+         this.mins[i] = 0;
       }
 
-      for (var i = 0; i < clusters.length; i++) {
+      for (var i = 0; i < this.clusters.length; i++) {
          for (var j = 0; j <= i; j++) {
             var dist = (i == j) ? Infinity : 
-               this.distance(clusters[i].value, clusters[j].value);
-            dists[i][j] = dist;
-            dists[j][i] = dist;
+               this.distance(this.clusters[i].value, this.clusters[j].value);
+            this.dists[i][j] = dist;
+            this.dists[j][i] = dist;
 
-            if (dist < dists[i][mins[i]]) {
-               mins[i] = j;               
+            if (dist < this.dists[i][this.mins[i]]) {
+               this.mins[i] = j;               
             }
          }
       }
 
-      var merged = this.mergeClosest(clusters, dists, mins, index);
+      var merged = this.mergeClosest();
       var i = 0;
       while (merged) {
-        if (snapshotCallback && (i % snapshot) == 0) {
-           snapshotCallback(clusters);           
+        if (snapshotCb && (i++ % snapshotPeriod) == 0) {
+           snapshotCb(this.clusters);           
         }
-        merged = this.mergeClosest(clusters, dists, mins, index);
-        i++;
+        merged = this.mergeClosest();
       }
     
-      clusters.forEach(function(cluster) {
+      this.clusters.forEach(function(cluster) {
         // clean up metadata used for clustering
         delete cluster.key;
         delete cluster.index;
       });
 
-      return clusters;
+      return this.clusters;
    },
   
-   mergeClosest: function(clusters, dists, mins, index) {
+   mergeClosest: function() {
       // find two closest clusters from cached mins
       var minKey = 0, min = Infinity;
-      for (var i = 0; i < clusters.length; i++) {
-         var key = clusters[i].key,
-             dist = dists[key][mins[key]];
+      for (var i = 0; i < this.clusters.length; i++) {
+         var key = this.clusters[i].key,
+             dist = this.dists[key][this.mins[key]];
          if (dist < min) {
             minKey = key;
             min = dist;
@@ -399,8 +402,8 @@ HierarchicalClustering.prototype = {
          return false;         
       }
 
-      var c1 = index[minKey],
-          c2 = index[mins[minKey]];
+      var c1 = this.index[minKey],
+          c2 = this.index[this.mins[minKey]];
 
       // merge two closest clusters
       var merged = {
@@ -410,55 +413,55 @@ HierarchicalClustering.prototype = {
          size: c1.size + c2.size
       };
 
-      clusters[c1.index] = merged;
-      clusters.splice(c2.index, 1);
-      index[c1.key] = merged;
+      this.clusters[c1.index] = merged;
+      this.clusters.splice(c2.index, 1);
+      this.index[c1.key] = merged;
 
       // update distances with new merged cluster
-      for (var i = 0; i < clusters.length; i++) {
-         var ci = clusters[i];
+      for (var i = 0; i < this.clusters.length; i++) {
+         var ci = this.clusters[i];
          var dist;
          if (c1.key == ci.key) {
             dist = Infinity;            
          }
          else if (this.linkage == "single") {
-            dist = dists[c1.key][ci.key];
-            if (dists[c1.key][ci.key] > dists[c2.key][ci.key]) {
-               dist = dists[c2.key][ci.key];
+            dist = this.dists[c1.key][ci.key];
+            if (this.dists[c1.key][ci.key] > this.dists[c2.key][ci.key]) {
+               dist = this.dists[c2.key][ci.key];
             }
          }
          else if (this.linkage == "complete") {
-            dist = dists[c1.key][ci.key];
-            if (dists[c1.key][ci.key] < dists[c2.key][ci.key]) {
-               dist = dists[c2.key][ci.key];              
+            dist = this.dists[c1.key][ci.key];
+            if (this.dists[c1.key][ci.key] < this.dists[c2.key][ci.key]) {
+               dist = this.dists[c2.key][ci.key];              
             }
          }
          else if (this.linkage == "average") {
-            dist = (dists[c1.key][ci.key] * c1.size
-                   + dists[c2.key][ci.key] * c2.size) / (c1.size + c2.size);
+            dist = (this.dists[c1.key][ci.key] * c1.size
+                   + this.dists[c2.key][ci.key] * c2.size) / (c1.size + c2.size);
          }
          else {
             dist = this.distance(ci.value, c1.value);            
          }
 
-         dists[c1.key][ci.key] = dists[ci.key][c1.key] = dist;
+         this.dists[c1.key][ci.key] = this.dists[ci.key][c1.key] = dist;
       }
 
     
       // update cached mins
-      for (var i = 0; i < clusters.length; i++) {
-         var key1 = clusters[i].key;        
-         if (mins[key1] == c1.key || mins[key1] == c2.key) {
+      for (var i = 0; i < this.clusters.length; i++) {
+         var key1 = this.clusters[i].key;        
+         if (this.mins[key1] == c1.key || this.mins[key1] == c2.key) {
             var min = key1;
-            for (var j = 0; j < clusters.length; j++) {
-               var key2 = clusters[j].key;
-               if (dists[key1][key2] < dists[key1][min]) {
+            for (var j = 0; j < this.clusters.length; j++) {
+               var key2 = this.clusters[j].key;
+               if (this.dists[key1][key2] < this.dists[key1][min]) {
                   min = key2;                  
                }
             }
-            mins[key1] = min;
+            this.mins[key1] = min;
          }
-         clusters[i].index = i;
+         this.clusters[i].index = i;
       }
     
       // clean up metadata used for clustering
@@ -469,7 +472,28 @@ HierarchicalClustering.prototype = {
    }
 }
 
-var distances = {
+var hcluster = function(items, distance, linkage, threshold, snapshot, snapshotCallback) {
+   distance = distance || "euclidean";
+   linkage = linkage || "average";
+
+   if (typeof distance == "string") {
+     distance = distances[distance];
+   }
+   var clusters = (new HierarchicalClustering(distance, linkage, threshold))
+                  .cluster(items, snapshot, snapshotCallback);
+      
+   if (threshold === undefined) {
+      return clusters[0]; // all clustered into one
+   }
+   return clusters;
+}
+
+module.exports = hcluster;
+
+});
+
+require.define("/distance.js", function (require, module, exports, __dirname, __filename) {
+    module.exports = {
   euclidean: function(v1, v2) {
       var total = 0;
       for (var i = 0; i < v1.length; i++) {
@@ -492,26 +516,89 @@ var distances = {
      return max;
    }
 };
+});
 
-var hcluster = function(items, distance, linkage, threshold, snapshot, snapshotCallback) {
-   distance = distance || "euclidean";
-   linkage = linkage || "average";
+require.define("/kmeans.js", function (require, module, exports, __dirname, __filename) {
+    var distances = require("./distance");
 
-   if (typeof distance == "string") {
-     distance = distances[distance];
+function randomCentroids(points, k) {
+   var centroids = points.slice(0); // copy
+   centroids.sort(function() {
+      return (Math.round(Math.random()) - 0.5);
+   });
+   return centroids.slice(0, k);
+}
+
+function closestCentroid(point, centroids, distance) {
+   var min = Infinity,
+       index = 0;
+   for (var i = 0; i < centroids.length; i++) {
+      var dist = distance(point, centroids[i]);
+      if (dist < min) {
+         min = dist;
+         index = i;
+      }
    }
-   var clusters = (new HierarchicalClustering(distance, linkage, threshold))
-                  .cluster(items, snapshot, snapshotCallback);
+   return index;
+}
+
+function kmeans(points, k, distance, snapshotPeriod, snapshotCb) {
+   distance = distance || "euclidean";
+   if (typeof distance == "string") {
+      distance = distances[distance];
+   }
+   
+   var centroids = randomCentroids(points, k);
+   var assignment = new Array(points.length);
+   var clusters = new Array(k);
+
+   var iterations = 0;   
+   var movement = true;
+   while (movement) {
+      // update point-to-centroid assignments
+      for (var i = 0; i < points.length; i++) {
+         assignment[i] = closestCentroid(points[i], centroids, distance);
+      }
+
+      // update location of each centroid
+      movement = false;
+      for (var j = 0; j < k; j++) {
+         var assigned = [];
+         assignment.forEach(function(centroid, index) {
+            if (centroid == j) {
+               assigned.push(points[index]);
+            }
+         });
+
+         if (!assigned.length) {
+            continue;
+         }
+         var centroid = centroids[j];
+         var newCentroid = new Array(centroid.length);
+
+         for (var g = 0; g < centroid.length; g++) {
+            var sum = 0;
+            for (var i = 0; i < assigned.length; i++) {
+               sum += assigned[i][g];
+            }
+            newCentroid[g] = sum / assigned.length;
+            
+            if (newCentroid[g] != centroid[g]) {
+               movement = true;
+            }
+         }
+         centroids[j] = newCentroid;
+         clusters[j] = assigned;
+      }
       
-   if (threshold === undefined) {
-      return clusters[0]; // all clustered into one
+      if (snapshotCb && (iterations++ % snapshotPeriod == 0)) {
+         snapshotCb(clusters);
+      }
    }
    return clusters;
 }
 
-module.exports = {
-   hcluster: hcluster
-};
+module.exports = kmeans;
 
 });
  return require('/clusterfck')})();
