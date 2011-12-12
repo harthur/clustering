@@ -17,8 +17,8 @@ Or grab the [browser file] (http://harthur.github.com/clusterfck/demos/colors/cl
 var clusterfck = require("clusterfck");
 
 var colors = [
-   [20, 120, 102],
-   [0, 230, 93],
+   [20, 20, 80],
+   [22, 22, 90],
    [250, 255, 253],
    [100, 54, 255]
 ];
@@ -28,13 +28,12 @@ var clusters = clusterfck.kmeans(colors, 2);
 
 The second argument to `kmeans` is the number of clusters you want. It returns an array of the clusters, for this example:
 
-````javascript
+```javascript
 [
- [[20, 120, 102 ], [0, 230, 93 ], [100, 54, 255 ]],
- [[250, 255, 253 ]]
+   [[20, 20, 80], [22, 22, 90], [100, 54, 255]]
+   [[250, 255, 253]],
 ]
-````
-
+```
 
 # Hierarchical
 
@@ -42,13 +41,13 @@ The second argument to `kmeans` is the number of clusters you want. It returns a
 var clusterfck = require("clusterfck");
 
 var colors = [
-   [20, 120, 102],
-   [0, 230, 93],
+   [20, 20, 80],
+   [22, 22, 90],
    [250, 255, 253],
    [100, 54, 255]
 ];
 
-var tree = clusterfck.hcluster(colors);
+var clusters = clusterfck.hcluster(colors);
 ```
 
 `hcluster` returns an object that represents the hierarchy of the clusters with `left` and `right` subtrees. The leaf clusters have a `value` property which is the vector from the data set.
@@ -57,22 +56,21 @@ var tree = clusterfck.hcluster(colors);
 {
    "left": {
       "left": {
-         "value": [0, 230, 93],
+         "left": {
+            "value": [22, 22, 90]
+         },
+         "right": {
+            "value": [20, 20, 80]
+         },
       },
       "right": {
-         "value": [20, 120, 102],
+         "value": [100, 54, 255]
       },
    },
    "right": {
-      "left": {
-         "value": [250, 255, 253],
-      },
-      "right": {
-         "value": [100, 54, 255],
-      },
-   },
+      "value": [250, 255, 253]
+   }
 }
-
 ```
 
 #### Distance metric and linkage
