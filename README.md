@@ -8,7 +8,7 @@ For node.js:
 ```bash
 npm install clusterfck
 ```
-Or grab the [browser file] (http://harthur.github.com/clusterfck/demos/colors/clusterfck.js) 
+Or grab the [browser file](http://harthur.github.com/clusterfck/demos/colors/clusterfck.js)
 
 
 # K-means
@@ -20,18 +20,22 @@ var colors = [
    [20, 20, 80],
    [22, 22, 90],
    [250, 255, 253],
-   [100, 54, 255]
+   [0, 30, 70],
+   [200, 0, 23],
+   [100, 54, 100],
+   [255, 13, 8]
 ];
 
-var clusters = clusterfck.kmeans(colors, 2);
+var clusters = clusterfck.kmeans(colors, 3);
 ```
 
-The second argument to `kmeans` is the number of clusters you want. It returns an array of the clusters, for this example:
+The second argument to `kmeans` is the number of clusters you want (default is `Math.sqrt(n/2)` where `n` is the number of vectors). It returns an array of the clusters, for this example:
 
 ```javascript
 [
-   [[20, 20, 80], [22, 22, 90], [100, 54, 255]]
-   [[250, 255, 253]],
+  [[200,0,23], [255,13,8]],
+  [[20,20,80], [22,22,90], [0,30,70], [100,54,100]],
+  [[250,255,253]]
 ]
 ```
 
