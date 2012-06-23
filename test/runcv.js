@@ -1,4 +1,4 @@
-var sys = require("sys"),
+var util = require('util'),
     fs = require("fs"),
     path = require("path"),
     url = require("url"),
@@ -17,7 +17,7 @@ function getDocs(couchUrl, callback) {
   var db = getDb(couchUrl);
   db.all({include_docs: true}, function(err, res) {
     if(err)
-      sys.puts("error retreiving data from " + couchUrl + ": '" + err + "'");
+      util.puts("error retreiving data from " + couchUrl + ": '" + err + "'");
     else {
       var data = _(res.rows).pluck("doc")
       callback(data);
@@ -26,7 +26,7 @@ function getDocs(couchUrl, callback) {
 }
 
 function runHCluster(data, options) {
-  sys.puts("\nrunning hcluster test on data size: " 
+  util.puts("\nrunning hcluster test on data size: " 
      + Math.min(data.length, options.length))
 
   eval("var distance = " + options.distance);
@@ -39,7 +39,7 @@ function runHCluster(data, options) {
   var clusters = clusterfck.hcluster(items, distance, merge, options.threshold);
   var t2 = Date.now();
   
-  sys.puts("ending cluster count: " + clusters.length);
+  util.puts("ending cluster count: " + clusters.length);
   return {
     'time' : t2 - t1,
     'clusters' : clusters
@@ -53,9 +53,9 @@ function runTest(config) {
   getDocs(config.db, function(data) {
     var stats = runHCluster(data, opts);
     if(options.verbose)
-      sys.inspect(stats);
+      util.inspect(stats);
     
-    sys.puts("running time: " + stats.time + "ms");
+    util.puts("running time: " + stats.time + "ms");
     // cvvvvvvvvvvvvvvcvVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV F
     if(options.report) {
       var db = getDb(options.report);
@@ -67,9 +67,9 @@ function runTest(config) {
       }
       db.insert(report, function(err, res) {
         if(err)
-          sys.puts("error sending report to " + option.report);
+          util.puts("error sending report to " + option.report);
         else
-          sys.puts("saved report " + options.report + "/" + res.id);
+          util.puts("saved report " + options.report + "/" + res.id);
       }); 
     }
   });

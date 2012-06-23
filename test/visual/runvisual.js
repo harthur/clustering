@@ -1,7 +1,7 @@
 var connect = require('connect'),
     fs = require("fs"),
     path = require("path"),
-    sys = require("sys"),
+    util = require('util'),
     build = require("../../build");
 
 var root = path.join(__dirname, "files");
@@ -11,4 +11,4 @@ connect.createServer(
   connect.static(root)
 ).listen(3000);
 
-sys.puts("visit http://127.0.0.1:3000/vis.html");
+util.puts("visit http://127.0.0.1:3000/vis.html");
