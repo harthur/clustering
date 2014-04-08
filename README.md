@@ -26,7 +26,11 @@ var colors = [
    [255, 13, 8]
 ];
 
+// Calculate clusters.
 var clusters = clusterfck.kmeans(colors, 3);
+
+// Calculate cluster for a new data point.
+var assignment = clusterfck.kmeans.classify([0, 0, 225]);
 ```
 
 The second argument to `kmeans` is the number of clusters you want (default is `Math.sqrt(n/2)` where `n` is the number of vectors). It returns an array of the clusters, for this example:
