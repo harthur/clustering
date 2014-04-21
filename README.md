@@ -27,13 +27,13 @@ var colors = [
 ];
 
 // Calculate clusters.
-var result = clusterfck.kmeans(colors, 3);
+clusterfck.kmeans(colors, 3);
 
 // Calculate cluster index for a new data point.
 var clusterIndex = clusterfck.kmeans.classify([0, 0, 225]);
 ```
 
-The second argument to `kmeans` is the number of clusters you want (default is `Math.sqrt(n/2)` where `n` is the number of vectors). It returns an object containing an array of the clusters and an array of the centroids, for this example:
+The second argument to `kmeans` is the number of clusters you want (default is `Math.sqrt(n/2)` where `n` is the number of vectors). The kmeans() method returns an object containing an array of the clusters and an array of the centroids, for this example:
 
 ```javascript
 { "clusters":
@@ -55,7 +55,7 @@ The toJSON() and fromJSON() methods are available for serialization.
 var json = clusterfck.kmeans.toJSON();
 
 // Deserialize centroids from JSON.
-var centroids = clusterfck.kmeans.fromJSON(json);
+clusterfck.kmeans.fromJSON(json);
 
 // Calculate cluster index from a previously serialized set of centroids.
 var clusterIndex = clusterfck.kmeans.classify([0, 0, 225]);
