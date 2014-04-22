@@ -28,13 +28,13 @@ var colors = [
 ];
 
 // Calculate clusters.
-var clusters = kmeans.train(colors, 3);
+var clusters = kmeans.cluster(colors, 3);
 
 // Calculate cluster index for a new data point.
 var clusterIndex = kmeans.classify([0, 0, 225]);
 ```
 
-The second argument to `train` is the number of clusters you want (default is `Math.sqrt(n/2)` where `n` is the number of vectors). The train() method returns an array of clusters, for this example:
+The second argument to `cluster` is the number of clusters you want (default is `Math.sqrt(n/2)` where `n` is the number of vectors). The cluster() method returns an array of clusters, for this example:
 
 ```javascript
 [
@@ -59,13 +59,26 @@ kmeans = kmeans.fromJSON(json);
 var clusterIndex = kmeans.classify([0, 0, 225]);
 ```
 
+# Initializing with Existing Centroids
+
+```javascript
+// Take existing centroids, perhaps from a database?
+var centroids = [ [ 35.5, 31.5, 85 ], [ 250, 255, 253 ], [ 227.5, 6.5, 15.5 ] ];
+
+// Initialize constructor with centroids.
+var kmeans = new clusterfck.kmeans(centroids);
+
+// Calculate cluster index.
+var clusterIndex = kmeans.classify([0, 0, 225]);
+```
+
 # Accessing Centroids and K value
 
-After training or loading via fromJSON(), the calculated centers are accessible via the centroids property. Similarly, the K-value can be derived via centroids.length.
+After clustering or loading via fromJSON(), the calculated centers are accessible via the centroids property. Similarly, the K-value can be derived via centroids.length.
 
 ```javascript
 // Calculate clusters.
-var clusters = kmeans.train(colors, 3);
+var clusters = kmeans.cluster(colors, 3);
 
 // Access centroids, an array of length 3.
 var centroids = kmeans.centroids;
