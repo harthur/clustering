@@ -15,7 +15,7 @@ Or grab the [browser file](http://harthur.github.com/clusterfck/demos/colors/clu
 
 ```javascript
 var clusterfck = require("clusterfck");
-var kmeans = new clusterfck.kmeans();
+var kmeans = new clusterfck.Kmeans();
 
 var colors = [
    [20, 20, 80],
@@ -66,7 +66,7 @@ var clusterIndex = kmeans.classify([0, 0, 225]);
 var centroids = [ [ 35.5, 31.5, 85 ], [ 250, 255, 253 ], [ 227.5, 6.5, 15.5 ] ];
 
 // Initialize constructor with centroids.
-var kmeans = new clusterfck.kmeans(centroids);
+var kmeans = new clusterfck.Kmeans(centroids);
 
 // Calculate cluster index.
 var clusterIndex = kmeans.classify([0, 0, 225]);
