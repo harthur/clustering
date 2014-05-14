@@ -40,7 +40,7 @@ The second argument to `cluster` is the number of clusters you want (default is 
 ]
 ```
 
-### Classification
+#### Classification
 
 For classification, instantiate a new Kmeans() object.
 
@@ -54,7 +54,7 @@ var clusters = kmeans.cluster(colors, 3);
 var clusterIndex = kmeans.classify([0, 0, 225]);
 ```
 
-### Serialization
+#### Serialization
 
 The toJSON() and fromJSON() methods are available for serialization.
 
@@ -69,7 +69,7 @@ kmeans = kmeans.fromJSON(json);
 var clusterIndex = kmeans.classify([0, 0, 225]);
 ```
 
-### Initializing with Existing Centroids
+#### Initializing with Existing Centroids
 
 ```javascript
 // Take existing centroids, perhaps from a database?
@@ -82,7 +82,7 @@ var kmeans = new clusterfck.Kmeans(centroids);
 var clusterIndex = kmeans.classify([0, 0, 225]);
 ```
 
-### Accessing Centroids and K value
+#### Accessing Centroids and K value
 
 After clustering or loading via fromJSON(), the calculated centers are accessible via the centroids property. Similarly, the K-value can be derived via centroids.length.
 
