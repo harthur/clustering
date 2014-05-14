@@ -15,7 +15,6 @@ Or grab the [browser file](http://harthur.github.com/clusterfck/demos/colors/clu
 
 ```javascript
 var clusterfck = require("clusterfck");
-var kmeans = new clusterfck.Kmeans();
 
 var colors = [
    [20, 20, 80],
@@ -28,10 +27,7 @@ var colors = [
 ];
 
 // Calculate clusters.
-var clusters = kmeans.cluster(colors, 3);
-
-// Calculate cluster index for a new data point.
-var clusterIndex = kmeans.classify([0, 0, 225]);
+var clusters = clusterfck.kmeans(colors, 3);
 ```
 
 The second argument to `cluster` is the number of clusters you want (default is `Math.sqrt(n/2)` where `n` is the number of vectors). The cluster() method returns an array of clusters, for this example:
@@ -44,7 +40,21 @@ The second argument to `cluster` is the number of clusters you want (default is 
 ]
 ```
 
-# Serialization
+## Classification
+
+For classification, instantiate a new Kmeans() object.
+
+```javascript
+var kmeans = new clusterfck.Kmeans();
+
+// Calculate clusters.
+var clusters = kmeans.cluster(colors, 3);
+
+// Calculate cluster index for a new data point.
+var clusterIndex = kmeans.classify([0, 0, 225]);
+```
+
+## Serialization
 
 The toJSON() and fromJSON() methods are available for serialization.
 
@@ -59,7 +69,7 @@ kmeans = kmeans.fromJSON(json);
 var clusterIndex = kmeans.classify([0, 0, 225]);
 ```
 
-# Initializing with Existing Centroids
+## Initializing with Existing Centroids
 
 ```javascript
 // Take existing centroids, perhaps from a database?
@@ -72,7 +82,7 @@ var kmeans = new clusterfck.Kmeans(centroids);
 var clusterIndex = kmeans.classify([0, 0, 225]);
 ```
 
-# Accessing Centroids and K value
+## Accessing Centroids and K value
 
 After clustering or loading via fromJSON(), the calculated centers are accessible via the centroids property. Similarly, the K-value can be derived via centroids.length.
 
