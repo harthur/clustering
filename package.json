@@ -1,7 +1,7 @@
 {
    "name": "clusterfck",
    "description": "K-means and hierarchical clustering",
-   "version": "0.5.1",
+   "version": "0.6.0",
    "author": "Heather Arthur <fayearthur@gmail.com>",
    "repository": {
       "type": "git",
@@ -11,7 +11,7 @@
       "lib": "./lib"
    },
    "dependencies" : {
-  
+
    },
    "devDependencies": {
       "uglify-js" : "*",
