@@ -137,7 +137,7 @@ var clusters = clusterfck.hcluster(colors);
 
 #### Distance metric and linkage
 
-Specify the distance metric, one of `"euclidean"` (default), `"manhattan"`, and `"max"`. The linkage criterion is the third argument, one of `"average"` (default), `"single"`, and `"complete"`.
+Specify the distance metric from one of the methods `"euclidean"` (default), `"manhattan"`, and `"max"`. The third argument is linkage criterion, selecting from one of the three choices `"average"` (default), `"single"`, and `"complete"`.
 
 ```javascript
 var tree = clusterfck.hcluster(colors, "euclidean", "single");
